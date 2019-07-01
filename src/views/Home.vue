@@ -9,6 +9,15 @@
       <h3>{{ item }}</h3>
     </mu-carousel-item>
   </mu-carousel>
+  <tao-carousel height="300px">
+    <tao-carousel-item v-for="item in 4" :key="item">
+      <h3>{{ item }}</h3>
+      <h3>{{ item }}</h3>
+      <h3>{{ item }}</h3>
+      <h3>{{ item }}</h3>
+      <h3>{{ item }}</h3>
+    </tao-carousel-item>
+  </tao-carousel>
   <!-- <test-panel></test-panel>
   <test-toast ref="toast"></test-toast> -->
   <img alt="Vue logo" src="../assets/logo.png">

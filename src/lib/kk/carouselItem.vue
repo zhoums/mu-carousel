@@ -1,5 +1,5 @@
 <template>
-<div v-show="ready" class="mu-carousel__item" :class="{
+<div v-show="ready" class="el-carousel__item" :class="{
       'is-active': active,
       'el-carousel__item--card': $parent.type === 'card',
       'is-in-stage': inStage,
@@ -7,8 +7,8 @@
       'is-animating': animating
     }" @click="handleItemClick"
   :style="itemStyle">
-  <!-- <div v-if="$parent.type === 'card'" v-show="!active" class="el-carousel__mask">
-  </div> -->
+  <div v-if="$parent.type === 'card'" v-show="!active" class="el-carousel__mask">
+  </div>
   <slot></slot>
 </div>
 </template>
@@ -19,7 +19,8 @@ import {
 } from 'element-ui/src/utils/util';
 const CARD_SCALE = 0.83;
 export default {
-  name: 'muCarouselItem',
+  name: 'TaoCarouselItem',
+
   props: {
     name: String,
     label: {
@@ -27,6 +28,7 @@ export default {
       default: ''
     }
   },
+
   data() {
     return {
       hover: false,
@@ -38,6 +40,7 @@ export default {
       animating: false
     };
   },
+
   methods: {
     processIndex(index, activeIndex, length) {
       if (activeIndex === 0 && index === length - 1) {
@@ -51,6 +54,7 @@ export default {
       }
       return index;
     },
+
     calcCardTranslate(index, activeIndex) {
       const parentWidth = this.$parent.$el.offsetWidth;
       if (this.inStage) {
@@ -61,14 +65,17 @@ export default {
         return (3 + CARD_SCALE) * parentWidth / 4;
       }
     },
+
     calcTranslate(index, activeIndex, isVertical) {
       const distance = this.$parent.$el[isVertical ? 'offsetHeight' : 'offsetWidth'];
-      let narmalDis = distance * (index - activeIndex)
-      console.log("90909", narmalDis, index, activeIndex)
-      return narmalDis > 0 ? narmalDis - distance * 0.1 : narmalDis == 0 ? narmalDis + distance * 0.1 : narmalDis + distance * 0.3;
+      return distance * (index - activeIndex);
+      //const distance = this.$parent.$el[isVertical ? 'offsetHeight' : 'offsetWidth'];
+      //let narmalDis = distance * (index - activeIndex)
+      //console.log("90909", narmalDis, index, activeIndex)
+      //return narmalDis > 0 ? narmalDis - distance * 0.1 : narmalDis == 0 ? narmalDis + distance * 0.1 : narmalDis + distance * 0.3;
     },
+
     translateItem(index, activeIndex, oldIndex) {
-      console.log("----000000", index, activeIndex, oldIndex)
       const parentType = this.$parent.type;
       const parentDirection = this.parentDirection;
       const length = this.$parent.items.length;
@@ -93,6 +100,7 @@ export default {
       }
       this.ready = true;
     },
+
     handleItemClick() {
       const parent = this.$parent;
       if (parent && parent.type === 'card') {
@@ -101,10 +109,12 @@ export default {
       }
     }
   },
+
   computed: {
     parentDirection() {
       return this.$parent.direction;
     },
+
     itemStyle() {
       const translateType = this.parentDirection === 'vertical' ? 'translateY' : 'translateX';
       const value = `${translateType}(${ this.translate }px) scale(${ this.scale })`;
@@ -114,17 +124,18 @@ export default {
       return autoprefixer(style);
     }
   },
+
   created() {
     this.$parent && this.$parent.updateItems();
   },
+
   destroyed() {
     this.$parent && this.$parent.updateItems();
   }
 };
 </script>
-
 <style>
-.mu-carousel__item {
+.el-carousel__item {
   display: inline-block;
   position: absolute;
   width: 80%;
@@ -132,11 +143,11 @@ export default {
   transition: all 2s ease;
 }
 
-.mu-carousel__item:nth-child(2n) {
+.el-carousel__item:nth-child(2n) {
   background-color: #99a9bf;
 }
 
-.mu-carousel__item:nth-child(2n+1) {
+.el-carousel__item:nth-child(2n+1) {
   background-color: #d3dce6;
 }
 </style>

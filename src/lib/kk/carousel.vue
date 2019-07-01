@@ -1,9 +1,42 @@
-<template lang="html">
-  <div class="mu-carousel" :style="{ height: height }">
-    <div class="mu-carousel__container">
-      <slot></slot>
-    </div>
+<template>
+<div :class="carouselClasses" @mouseenter.stop="handleMouseEnter" @mouseleave.stop="handleMouseLeave">
+  <div class="el-carousel__container" :style="{ height: height }">
+    <transition v-if="arrowDisplay" name="carousel-arrow-left">
+      <button
+          type="button"
+          v-show="(arrow === 'always' || hover) && (loop || activeIndex > 0)"
+          @mouseenter="handleButtonEnter('left')"
+          @mouseleave="handleButtonLeave"
+          @click.stop="throttledArrowClick(activeIndex - 1)"
+          class="el-carousel__arrow el-carousel__arrow--left">
+          <i class="el-icon-arrow-left"></i>
+        </button>
+    </transition>
+    <transition v-if="arrowDisplay" name="carousel-arrow-right">
+      <button
+          type="button"
+          v-show="(arrow === 'always' || hover) && (loop || activeIndex < items.length - 1)"
+          @mouseenter="handleButtonEnter('right')"
+          @mouseleave="handleButtonLeave"
+          @click.stop="throttledArrowClick(activeIndex + 1)"
+          class="el-carousel__arrow el-carousel__arrow--right">
+          <i class="el-icon-arrow-right"></i>
+        </button>
+    </transition>
+    <slot></slot>
   </div>
+  <ul v-if="indicatorPosition !== 'none'" :class="indicatorsClasses">
+    <li v-for="(item, index) in items" :key="index" :class="[
+          'el-carousel__indicator',
+          'el-carousel__indicator--' + direction,
+          { 'is-active': index === activeIndex }]" @mouseenter="throttledIndicatorHover(index)"
+      @click.stop="handleIndicatorClick(index)">
+      <button class="el-carousel__button">
+          <span v-if="hasLabel">{{ item.label }}</span>
+        </button>
+    </li>
+  </ul>
+</div>
 </template>
 
 <script>
@@ -12,17 +45,16 @@ import {
   addResizeListener,
   removeResizeListener
 } from 'element-ui/src/utils/resize-event';
+
 export default {
-  name: 'mu-carousel',
+  name: 'TaoCarousel',
+
   props: {
-    height: {
-      type: String,
-      default: "300px"
-    },
     initialIndex: {
       type: Number,
       default: 0
     },
+    height: String,
     trigger: {
       type: String,
       default: 'hover'
@@ -57,26 +89,76 @@ export default {
       }
     }
   },
+
   data() {
     return {
+      items: [],
       activeIndex: -1,
       containerWidth: 0,
       timer: null,
       hover: false
+    };
+  },
+
+  computed: {
+    arrowDisplay() {
+      return this.arrow !== 'never' && this.direction !== 'vertical';
+    },
+
+    hasLabel() {
+      return this.items.some(item => item.label.toString().length > 0);
+    },
+
+    carouselClasses() {
+      const classes = ['el-carousel', 'el-carousel--' + this.direction];
+      if (this.type === 'card') {
+        classes.push('el-carousel--card');
+      }
+      return classes;
+    },
+
+    indicatorsClasses() {
+      const classes = ['el-carousel__indicators', 'el-carousel__indicators--' + this.direction];
+      if (this.hasLabel) {
+        classes.push('el-carousel__indicators--labels');
+      }
+      if (this.indicatorPosition === 'outside' || this.type === 'card') {
+        classes.push('el-carousel__indicators--outside');
+      }
+      return classes;
     }
   },
-  methods: {
-    updateItems() {
-      this.items = this.$children.filter(child => child.$options.name === 'muCarouselItem');
+
+  watch: {
+    items(val) {
+      if (val.length > 0) this.setActiveItem(this.initialIndex);
     },
+
+    activeIndex(val, oldVal) {
+      this.resetItemPosition(oldVal);
+      this.$emit('change', val, oldVal);
+    },
+
+    autoplay(val) {
+      val ? this.startTimer() : this.pauseTimer();
+    },
+
+    loop() {
+      this.setActiveItem(this.activeIndex);
+    }
+  },
+
+  methods: {
     handleMouseEnter() {
       this.hover = true;
       this.pauseTimer();
     },
+
     handleMouseLeave() {
       this.hover = false;
       this.startTimer();
     },
+
     itemInStage(item, index) {
       const length = this.items.length;
       if (index === length - 1 && item.inStage && this.items[0].active ||
@@ -88,6 +170,7 @@ export default {
       }
       return false;
     },
+
     handleButtonEnter(arrow) {
       if (this.direction === 'vertical') return;
       this.items.forEach((item, index) => {
@@ -96,37 +179,45 @@ export default {
         }
       });
     },
+
     handleButtonLeave() {
       if (this.direction === 'vertical') return;
       this.items.forEach(item => {
         item.hover = false;
       });
     },
+
+    updateItems() {
+      this.items = this.$children.filter(child => child.$options.name === 'TaoCarouselItem');
+    },
+
     resetItemPosition(oldIndex) {
       this.items.forEach((item, index) => {
         item.translateItem(index, this.activeIndex, oldIndex);
       });
     },
+
     playSlides() {
-      console.log("Adsf", this.activeIndex, this.items.length, this.loop)
+      console.log(";;;;;;", this.activeIndex, this.items.length)
       if (this.activeIndex < this.items.length - 1) {
         this.activeIndex++;
       } else if (this.loop) {
         this.activeIndex = 0;
       }
     },
+
     pauseTimer() {
       if (this.timer) {
         clearInterval(this.timer);
         this.timer = null;
       }
     },
+
     startTimer() {
-      if (this.interval <= 0 || !this.autoplay || this.timer) {
-        return
-      };
+      if (this.interval <= 0 || !this.autoplay || this.timer) return;
       this.timer = setInterval(this.playSlides, this.interval);
     },
+
     setActiveItem(index) {
       if (typeof index === 'string') {
         const filteredItems = this.items.filter(item => item.name === index);
@@ -152,21 +243,35 @@ export default {
         this.resetItemPosition(oldIndex);
       }
     },
+
     prev() {
       this.setActiveItem(this.activeIndex - 1);
     },
+
     next() {
       this.setActiveItem(this.activeIndex + 1);
     },
+
     handleIndicatorClick(index) {
       this.activeIndex = index;
     },
+
     handleIndicatorHover(index) {
       if (this.trigger === 'hover' && index !== this.activeIndex) {
         this.activeIndex = index;
       }
     }
   },
+
+  created() {
+    this.throttledArrowClick = throttle(300, true, index => {
+      this.setActiveItem(index);
+    });
+    this.throttledIndicatorHover = throttle(300, index => {
+      this.handleIndicatorHover(index);
+    });
+  },
+
   mounted() {
     this.updateItems();
     this.$nextTick(() => {
@@ -176,22 +281,11 @@ export default {
       }
       this.startTimer();
     });
-
   },
-  watch: {
-    items(val) {
-      if (val.length > 0) this.setActiveItem(this.initialIndex);
-    }
-  }
-}
-</script>
 
-<style lang="css">
-  .mu-carousel__container{
-    overflow: hidden;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    text-align: left;
+  beforeDestroy() {
+    if (this.$el) removeResizeListener(this.$el, this.resetItemPosition);
+    this.pauseTimer();
   }
-</style>
+};
+</script>
