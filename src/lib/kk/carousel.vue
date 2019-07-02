@@ -2,24 +2,12 @@
 <div :class="carouselClasses" @mouseenter.stop="handleMouseEnter" @mouseleave.stop="handleMouseLeave">
   <div class="el-carousel__container" :style="{ height: height }">
     <transition v-if="arrowDisplay" name="carousel-arrow-left">
-      <button
-          type="button"
-          v-show="(arrow === 'always' || hover) && (loop || activeIndex > 0)"
-          @mouseenter="handleButtonEnter('left')"
-          @mouseleave="handleButtonLeave"
-          @click.stop="throttledArrowClick(activeIndex - 1)"
-          class="el-carousel__arrow el-carousel__arrow--left">
+      <button type="button" v-show="(arrow === 'always' || hover) && (loop || activeIndex > 0)" @mouseenter="handleButtonEnter('left')" @mouseleave="handleButtonLeave" @click.stop="throttledArrowClick(activeIndex - 1)" class="el-carousel__arrow el-carousel__arrow--left">
           <i class="el-icon-arrow-left"></i>
         </button>
     </transition>
     <transition v-if="arrowDisplay" name="carousel-arrow-right">
-      <button
-          type="button"
-          v-show="(arrow === 'always' || hover) && (loop || activeIndex < items.length - 1)"
-          @mouseenter="handleButtonEnter('right')"
-          @mouseleave="handleButtonLeave"
-          @click.stop="throttledArrowClick(activeIndex + 1)"
-          class="el-carousel__arrow el-carousel__arrow--right">
+      <button type="button" v-show="(arrow === 'always' || hover) && (loop || activeIndex < items.length - 1)" @mouseenter="handleButtonEnter('right')" @mouseleave="handleButtonLeave" @click.stop="throttledArrowClick(activeIndex + 1)" class="el-carousel__arrow el-carousel__arrow--right">
           <i class="el-icon-arrow-right"></i>
         </button>
     </transition>
@@ -29,8 +17,7 @@
     <li v-for="(item, index) in items" :key="index" :class="[
           'el-carousel__indicator',
           'el-carousel__indicator--' + direction,
-          { 'is-active': index === activeIndex }]" @mouseenter="throttledIndicatorHover(index)"
-      @click.stop="handleIndicatorClick(index)">
+          { 'is-active': index === activeIndex }]" @mouseenter="throttledIndicatorHover(index)" @click.stop="handleIndicatorClick(index)">
       <button class="el-carousel__button">
           <span v-if="hasLabel">{{ item.label }}</span>
         </button>
@@ -198,7 +185,6 @@ export default {
     },
 
     playSlides() {
-      console.log(";;;;;;", this.activeIndex, this.items.length)
       if (this.activeIndex < this.items.length - 1) {
         this.activeIndex++;
       } else if (this.loop) {
@@ -279,7 +265,7 @@ export default {
       if (this.initialIndex < this.items.length && this.initialIndex >= 0) {
         this.activeIndex = this.initialIndex;
       }
-      this.startTimer();
+      // this.startTimer();
     });
   },
 

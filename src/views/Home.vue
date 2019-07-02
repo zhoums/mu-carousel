@@ -1,6 +1,6 @@
 <template>
 <div class="home">
-  <mu-carousel>
+  <!-- <mu-carousel>
     <mu-carousel-item v-for="item in 4" :key="item">
       <h3>{{ item }}</h3>
       <h3>{{ item }}</h3>
@@ -8,14 +8,16 @@
       <h3>{{ item }}</h3>
       <h3>{{ item }}</h3>
     </mu-carousel-item>
-  </mu-carousel>
-  <tao-carousel height="300px">
-    <tao-carousel-item v-for="item in 4" :key="item">
-      <h3>{{ item }}</h3>
-      <h3>{{ item }}</h3>
-      <h3>{{ item }}</h3>
-      <h3>{{ item }}</h3>
-      <h3>{{ item }}</h3>
+  </mu-carousel> -->
+  <tao-carousel height="575px">
+    <tao-carousel-item>
+      <img src="../assets/1s.png">
+    </tao-carousel-item>
+    <tao-carousel-item>
+      <img src="../assets/2s.png">
+    </tao-carousel-item>
+    <tao-carousel-item>
+      <img src="../assets/3s.png">
     </tao-carousel-item>
   </tao-carousel>
   <!-- <test-panel></test-panel>
@@ -41,3 +43,9 @@ export default {
   }
 }
 </script>
+<style media="screen">
+.el-carousel__item {
+  display: flex !important;
+  justify-content: space-between;
+}
+</style>

@@ -5,8 +5,7 @@
       'is-in-stage': inStage,
       'is-hover': hover,
       'is-animating': animating
-    }" @click="handleItemClick"
-  :style="itemStyle">
+    }" @click="handleItemClick" :style="itemStyle">
   <div v-if="$parent.type === 'card'" v-show="!active" class="el-carousel__mask">
   </div>
   <slot></slot>
@@ -68,11 +67,8 @@ export default {
 
     calcTranslate(index, activeIndex, isVertical) {
       const distance = this.$parent.$el[isVertical ? 'offsetHeight' : 'offsetWidth'];
-      return distance * (index - activeIndex);
-      //const distance = this.$parent.$el[isVertical ? 'offsetHeight' : 'offsetWidth'];
-      //let narmalDis = distance * (index - activeIndex)
-      //console.log("90909", narmalDis, index, activeIndex)
-      //return narmalDis > 0 ? narmalDis - distance * 0.1 : narmalDis == 0 ? narmalDis + distance * 0.1 : narmalDis + distance * 0.3;
+      let narmalDis = distance * (index - activeIndex)
+      return narmalDis > 0 ? narmalDis - distance * 0.14 : narmalDis == 0 ? narmalDis + distance * 0.14 : narmalDis + distance * 0.42;
     },
 
     translateItem(index, activeIndex, oldIndex) {
@@ -138,16 +134,20 @@ export default {
 .el-carousel__item {
   display: inline-block;
   position: absolute;
-  width: 80%;
+  width: 72%;
   height: 100%;
   transition: all 2s ease;
 }
 
-.el-carousel__item:nth-child(2n) {
+.el-carousel__item img {
+  /* width: 100%; */
+}
+
+/* .el-carousel__item:nth-child(2n) {
   background-color: #99a9bf;
 }
 
 .el-carousel__item:nth-child(2n+1) {
   background-color: #d3dce6;
-}
+} */
 </style>
