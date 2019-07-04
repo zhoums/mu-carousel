@@ -1,6 +1,8 @@
 <template>
 <div v-show="ready" class="el-carousel__item" :class="{
       'is-active': active,
+      'pre': isPre,
+      'after': isAfter,
       'el-carousel__item--card': $parent.type === 'card',
       'is-in-stage': inStage,
       'is-hover': hover,
@@ -34,6 +36,8 @@ export default {
       translate: 0,
       scale: 1,
       active: false,
+      isPre: false,
+      isAfter: false,
       ready: false,
       inStage: false,
       animating: false
@@ -68,7 +72,7 @@ export default {
     calcTranslate(index, activeIndex, isVertical) {
       const distance = this.$parent.$el[isVertical ? 'offsetHeight' : 'offsetWidth'];
       let narmalDis = distance * (index - activeIndex)
-      return narmalDis > 0 ? narmalDis - distance * 0.14 : narmalDis == 0 ? narmalDis + distance * 0.14 : narmalDis + distance * 0.42;
+      return narmalDis > 0 ? narmalDis - distance * 0.235 : narmalDis == 0 ? narmalDis + distance * 0.17 : narmalDis + distance * 0.5454;
     },
 
     translateItem(index, activeIndex, oldIndex) {
@@ -91,8 +95,21 @@ export default {
         this.scale = this.active ? 1 : CARD_SCALE;
       } else {
         this.active = index === activeIndex;
+        console.log("dsfads", index, activeIndex, length, length - 1, activeIndex == (length - 1))
+        this.isPre = this.isAfter = false;
+        if (index == activeIndex + 1) {
+          this.isAfter = true;
+        }
+        if (index == activeIndex - 1) {
+          this.isPre = true;
+        }
+        if (index === activeIndex) {
+          this.isPre = this.isAfter = false;
+        }
+
         const isVertical = parentDirection === 'vertical';
         this.translate = this.calcTranslate(index, activeIndex, isVertical);
+        this.scale = this.active ? 1 : CARD_SCALE;
       }
       this.ready = true;
     },
@@ -134,14 +151,36 @@ export default {
 .el-carousel__item {
   display: inline-block;
   position: absolute;
-  width: 72%;
+  width: 80%;
+  text-align: left;
   height: 100%;
-  transition: all 2s ease;
 }
 
 .el-carousel__item img {
-  /* width: 100%; */
+  width: 25%;
+  height: auto;
 }
+
+.el-carousel__item img:nth-child(2) {
+  transform: translateX(-25%)
+}
+
+.el-carousel__item img:nth-child(3) {
+  transform: translateX(-50%)
+}
+
+.el-carousel__item img:nth-child(4) {
+  transform: translateX(-75%)
+}
+
+.el-carousel__item.after>img:nth-child(n+2) {
+  visibility: hidden
+}
+
+.el-carousel__item.pre>img:not(:last-child) {
+  visibility: hidden;
+}
+
 
 /* .el-carousel__item:nth-child(2n) {
   background-color: #99a9bf;

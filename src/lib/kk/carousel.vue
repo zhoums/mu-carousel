@@ -48,7 +48,7 @@ export default {
     },
     autoplay: {
       type: Boolean,
-      default: true
+      default: false
     },
     interval: {
       type: Number,
@@ -265,7 +265,7 @@ export default {
       if (this.initialIndex < this.items.length && this.initialIndex >= 0) {
         this.activeIndex = this.initialIndex;
       }
-      // this.startTimer();
+      this.startTimer();
     });
   },
 
@@ -275,3 +275,16 @@ export default {
   }
 };
 </script>
+<style media="screen">
+.el-carousel__container {
+  overflow: hidden;
+}
+
+.el-carousel__arrow--right {
+  right: 16.5%;
+}
+
+.el-carousel__arrow--left {
+  left: 15%;
+}
+</style>

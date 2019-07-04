@@ -1,25 +1,28 @@
 <template>
 <div class="home">
-  <!-- <mu-carousel>
-    <mu-carousel-item v-for="item in 4" :key="item">
-      <h3>{{ item }}</h3>
-      <h3>{{ item }}</h3>
-      <h3>{{ item }}</h3>
-      <h3>{{ item }}</h3>
-      <h3>{{ item }}</h3>
-    </mu-carousel-item>
-  </mu-carousel> -->
-  <tao-carousel height="575px">
-    <tao-carousel-item>
-      <img src="../assets/1s.png">
-    </tao-carousel-item>
-    <tao-carousel-item>
-      <img src="../assets/2s.png">
-    </tao-carousel-item>
-    <tao-carousel-item>
-      <img src="../assets/3s.png">
-    </tao-carousel-item>
-  </tao-carousel>
+  <div style="width:100%; position:absolute; left:50%; transform:translateX(-50%)">
+    <tao-carousel height="575px" arrow="always">
+      <tao-carousel-item>
+        <img src="../assets/1.png">
+        <img src="../assets/2.png">
+        <img src="../assets/3.png">
+        <img src="../assets/4.png">
+      </tao-carousel-item>
+      <tao-carousel-item>
+        <img src="../assets/5.png">
+        <img src="../assets/6.png">
+        <img src="../assets/7.png">
+        <img src="../assets/8.png">
+      </tao-carousel-item>
+      <tao-carousel-item>
+        <img src="../assets/9.png">
+        <img src="../assets/10.png">
+        <img src="../assets/11.png">
+        <img src="../assets/12.png">
+      </tao-carousel-item>
+    </tao-carousel>
+  </div>
+
   <!-- <test-panel></test-panel>
   <test-toast ref="toast"></test-toast> -->
   <img alt="Vue logo" src="../assets/logo.png">
