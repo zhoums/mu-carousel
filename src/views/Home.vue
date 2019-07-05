@@ -1,7 +1,32 @@
 <template>
 <div class="home">
-  <div style="width:100%; position:absolute; left:50%; transform:translateX(-50%)">
-    <tao-carousel height="575px" arrow="always">
+  <el-carousel height="720px" type="card">
+    <el-carousel-item>
+      <img src="../assets/1.jpg">
+    </el-carousel-item>
+    <el-carousel-item>
+      <img src="../assets/2.jpg">
+    </el-carousel-item>
+    <el-carousel-item>
+      <img src="../assets/3.jpg">
+    </el-carousel-item>
+    <el-carousel-item>
+      <img src="../assets/2.jpg">
+    </el-carousel-item>
+    <el-carousel-item>
+      <img src="../assets/5.jpg">
+    </el-carousel-item>
+    <el-carousel-item>
+      <img src="../assets/6.jpg">
+    </el-carousel-item>
+  </el-carousel>
+  <!-- <el-carousel :interval="4000" type="card" height="200px">
+    <el-carousel-item v-for="item in 6" :key="item">
+      <h3 class="medium">{{ item }}</h3>
+    </el-carousel-item>
+  </el-carousel> -->
+  <!--<div style="width:100%; position:absolute; left:50%; transform:translateX(-50%)">
+     <tao-carousel height="575px" arrow="always">
       <tao-carousel-item>
         <img src="../assets/1.png">
         <img src="../assets/2.png">
@@ -21,7 +46,7 @@
         <img src="../assets/12.png">
       </tao-carousel-item>
     </tao-carousel>
-  </div>
+  </div>-->
 
   <!-- <test-panel></test-panel>
   <test-toast ref="toast"></test-toast> -->
@@ -38,7 +63,7 @@ export default {
   name: 'home',
   data() {
     return {
-      testArr: [1, 2, 5]
+      testArr: ["../assets/1.jpg", "../assets/2.jpg", "../assets/3.jpg", "../assets/4.jpg", "../assets/5.jpg", "../assets/6.jpg"]
     }
   },
   components: {
@@ -47,8 +72,19 @@ export default {
 }
 </script>
 <style media="screen">
-.el-carousel__item {
-  display: flex !important;
-  justify-content: space-between;
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 150px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+  background-color: #d3dce6;
 }
 </style>

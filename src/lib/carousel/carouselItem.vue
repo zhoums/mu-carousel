@@ -147,7 +147,7 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style>
 .el-carousel__item {
   display: inline-block;
   position: absolute;
